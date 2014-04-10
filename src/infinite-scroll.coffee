@@ -27,13 +27,15 @@ mod.directive 'infiniteScroll', ['$rootScope', '$window', '$timeout', 'THROTTLE_
     # called in order to throttle the function call.
     handler = ->
       if container == $window
-        containerBottom = container.height() + container.scrollTop()
+        containerBottom = container.innerHeight + container.scrollTop()
         elementBottom = elem.offset().top + elem.height()
+        remaining = elementBottom - containerBottom
+        shouldScroll = remaining <= container.innerHeight * scrollDistance + 1
       else
         containerBottom = container.height()
         elementBottom = elem.offset().top - container.offset().top + elem.height()
-      remaining = elementBottom - containerBottom
-      shouldScroll = remaining <= container.height() * scrollDistance + 1
+        remaining = elementBottom - containerBottom
+        shouldScroll = remaining <= container.height() * scrollDistance + 1
 
       if shouldScroll && scrollEnabled
         scope.infiniteScroll()
