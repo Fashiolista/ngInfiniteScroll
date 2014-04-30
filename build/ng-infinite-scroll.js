@@ -1,4 +1,4 @@
-/* ng-infinite-scroll - v1.1.0 - 2014-04-10 */
+/* ng-infinite-scroll - v1.1.0 - 2014-04-30 */
 var mod;
 
 mod = angular.module('infinite-scroll', []);
@@ -24,21 +24,25 @@ mod.directive('infiniteScroll', [
         immediateCheck = true;
         handler = function() {
           var containerBottom, elementBottom, remaining, shouldScroll;
-          if (container === $window) {
-            containerBottom = window.innerHeight + container.scrollTop();
-            elementBottom = elem.offset().top + elem.height();
-            remaining = elementBottom - containerBottom;
-            shouldScroll = remaining <= window.innerHeight * scrollDistance + 1;
-          } else {
-            containerBottom = container.height();
-            elementBottom = elem.offset().top - container.offset().top + elem.height();
-            remaining = elementBottom - containerBottom;
-            shouldScroll = remaining <= container.height() * scrollDistance + 1;
-          }
-          if (shouldScroll && scrollEnabled) {
-            return scope.infiniteScroll();
-          } else if (shouldScroll) {
-            return checkWhenEnabled = true;
+          try {
+            if (container === $window) {
+              containerBottom = window.innerHeight + container.scrollTop();
+              elementBottom = elem.offset().top + elem.height();
+              remaining = elementBottom - containerBottom;
+              shouldScroll = remaining <= window.innerHeight * scrollDistance + 1;
+            } else {
+              containerBottom = container.height();
+              elementBottom = elem.offset().top - container.offset().top + elem.height();
+              remaining = elementBottom - containerBottom;
+              shouldScroll = remaining <= container.height() * scrollDistance + 1;
+            }
+            if (shouldScroll && scrollEnabled) {
+              return scope.infiniteScroll();
+            } else if (shouldScroll) {
+              return checkWhenEnabled = true;
+            }
+          } catch (error) {
+            return console.log("ignore" + error);
           }
         };
         throttle = function(func, wait) {

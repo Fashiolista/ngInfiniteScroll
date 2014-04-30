@@ -26,21 +26,25 @@ mod.directive 'infiniteScroll', ['$rootScope', '$window', '$timeout', 'THROTTLE_
     # with a boolean that is set to true when the function is
     # called in order to throttle the function call.
     handler = ->
-      if container == $window
-        containerBottom = window.innerHeight + container.scrollTop()
-        elementBottom = elem.offset().top + elem.height()
-        remaining = elementBottom - containerBottom
-        shouldScroll = remaining <= window.innerHeight * scrollDistance + 1
-      else
-        containerBottom = container.height()
-        elementBottom = elem.offset().top - container.offset().top + elem.height()
-        remaining = elementBottom - containerBottom
-        shouldScroll = remaining <= container.height() * scrollDistance + 1
+      try
+        if container == $window
+          containerBottom = window.innerHeight + container.scrollTop()
+          elementBottom = elem.offset().top + elem.height()
+          remaining = elementBottom - containerBottom
+          shouldScroll = remaining <= window.innerHeight * scrollDistance + 1
+        else
+          containerBottom = container.height()
+          elementBottom = elem.offset().top - container.offset().top + elem.height()
+          remaining = elementBottom - containerBottom
+          shouldScroll = remaining <= container.height() * scrollDistance + 1
 
-      if shouldScroll && scrollEnabled
-        scope.infiniteScroll()
-      else if shouldScroll
-        checkWhenEnabled = true
+        if shouldScroll && scrollEnabled
+          scope.infiniteScroll()
+        else if shouldScroll
+          checkWhenEnabled = true
+      catch error
+        console.log("ignore" + error)
+
 
     # The optional THROTTLE_MILLISECONDS configuration value specifies
     # a minimum time that should elapse between each call to the
