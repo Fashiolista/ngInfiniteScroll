@@ -120,11 +120,17 @@ mod.directive 'infiniteScroll', ['$rootScope', '$window', '$timeout', 'THROTTLE_
 
     changeContainer $window
 
-    handleInfiniteScrollContainer = (newContainer) ->
+    handleInfiniteScrollContainer = (passedContainer) ->
       # TODO: For some reason newContainer is sometimes null instead
       # of the empty array, which Angular is supposed to pass when the
       # element is not defined
       # (https://github.com/sroze/ngInfiniteScroll/pull/7#commitcomment-5748431).
+      # ability to define the container on the rootscope
+      # in the case you need its value to be conditional up to other services
+      if(angular.isDefined($rootScope.infiniteContainer))
+        newContainer = $rootScope.infiniteContainer;
+      else
+        newContainer = passedContainer
       # So I leave both checks.
       if (not newContainer?) or newContainer.length == 0
         return
